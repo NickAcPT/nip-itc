@@ -20,6 +20,8 @@ class AddressMaskTests {
         @JvmStatic
         fun addressMaskProvider() =
             arrayOf(
+                32 to "255.255.255.255",
+
                 24 to "255.255.255.0",
                 16 to "255.255.0.0",
 
