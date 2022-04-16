@@ -18,9 +18,10 @@ data class AddressMask(
     override fun toString(): String = "/$mostSignificantBits"
 
     companion object {
-        fun fromString(str: String): AddressMask {
-            if (str.first() != '/') throw IllegalArgumentException("Invalid address mask string: $str")
-            return AddressMask(str.drop(1).toInt())
+        fun fromString(str: String, hasSlashPrefix: Boolean = true): AddressMask {
+            if (hasSlashPrefix && str.first() != '/') throw IllegalArgumentException("Invalid address mask string: $str")
+
+            return AddressMask((str.drop(if (hasSlashPrefix) 1 else 0)).toInt())
         }
     }
 }

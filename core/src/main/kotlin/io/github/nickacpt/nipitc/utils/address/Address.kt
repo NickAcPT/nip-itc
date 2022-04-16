@@ -33,6 +33,18 @@ data class Address(
         return Address(newSet)
     }
 
+    /**
+     * Returns a copy of this address with the given octet(s) replaced.
+     */
+    fun copy(
+        firstOctet: UByte = this.firstOctet,
+        secondOctet: UByte = this.secondOctet,
+        thirdOctet: UByte = this.thirdOctet,
+        fourthOctet: UByte = this.fourthOctet
+    ): Address {
+        return Address(firstOctet, secondOctet, thirdOctet, fourthOctet)
+    }
+
     companion object {
         /**
          * Parses a string into an ipv4 address object
