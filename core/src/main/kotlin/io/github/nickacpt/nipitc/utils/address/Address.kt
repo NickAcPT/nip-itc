@@ -7,7 +7,6 @@ import java.util.BitSet
 data class Address(
     val bitSet: BitSet
 ) {
-
     constructor(
         firstOctet: UByte,
         secondOctet: UByte,
@@ -28,13 +27,19 @@ data class Address(
         return "$firstOctet.$secondOctet.$thirdOctet.$fourthOctet"
     }
 
+    infix fun and(other: Address): Address {
+        val newSet = this.bitSet.clone() as BitSet
+        newSet.and(other.bitSet)
+        return Address(newSet)
+    }
+
     companion object {
         /**
          * Parses a string into an ipv4 address object
          */
         fun fromString(string: String): Address {
             val octets = string.split(".")
-            if (octets.size != 4) throw IllegalArgumentException("Invalid address format")
+            if (octets.size != 4) throw IllegalArgumentException("Invalid address format \"$string\"")
             return Address(
                 octets[0].toUByte(),
                 octets[1].toUByte(),

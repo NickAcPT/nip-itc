@@ -11,6 +11,10 @@ data class AddressMask(
 
     val maskAddress = maskAddressFromMostSignificantBitCount(mostSignificantBits)
 
+    fun apply(address: Address): Address {
+        return address and maskAddress
+    }
+
     override fun toString(): String = "/$mostSignificantBits"
 
     companion object {

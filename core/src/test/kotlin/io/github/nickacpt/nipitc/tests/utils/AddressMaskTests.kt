@@ -16,7 +16,26 @@ class AddressMaskTests {
         assertEquals(expected, actual.maskAddress)
     }
 
+    @ParameterizedTest(name = "Address \"{1}\" with mask \"{0}\" applied should be \"{2}\"")
+    @MethodSource("addressAndMaskApplyProvider")
+    fun `Address Mask should be correct when applied`(mask: AddressMask, address: Address, expected: Address) {
+        val actual = mask.apply(address)
+        assertEquals(expected, actual)
+    }
+
     companion object {
+        @JvmStatic
+        fun addressAndMaskApplyProvider() =
+            arrayOf(
+                24 to "172.16.4.1|172.16.4.0",
+                16 to "192.0.0.1|192.0.0.0",
+
+                20 to "172.16.132.70|172.16.128.0"
+            ).map { (bitCount, addresses) ->
+                val (address, mask) = addresses.split("|")
+                Arguments.of(AddressMask(bitCount), Address.fromString(address), Address.fromString(mask))
+            }
+
         @JvmStatic
         fun addressMaskProvider() =
             arrayOf(
