@@ -28,7 +28,7 @@ internal fun addressBitSetFromOctets(
     thirdOctet: UByte,
     fourthOctet: UByte
 ): BitSet {
-    return BitSet(ADDRESS_BIT_LENGTH / 2).apply {
+    return BitSet(ADDRESS_BIT_LENGTH).apply {
         arrayOf(firstOctet, secondOctet, thirdOctet, fourthOctet).joinToString("") { it.toOctetBinaryRepresentation() }
             .mapIndexed { index, c ->
                 set(ADDRESS_BIT_LENGTH - index - 1, c == '1')
