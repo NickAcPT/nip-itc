@@ -1,6 +1,10 @@
 package io.github.nickacpt.nipitc.utils
 
 import io.github.nickacpt.nipitc.utils.address.Address
+import java.util.BitSet
+
+const val OCTET_LENGTH = 8
+const val ADDRESS_BIT_LENGTH = 32
 
 internal fun UByte.toOctetBinaryRepresentation(): String {
     return toString(2).padStart(8, '0')
@@ -11,7 +15,25 @@ internal fun String.fromOctetBinaryRepresentation(): UByte {
 }
 
 internal fun Address.toBinaryRepresentation(separator: String = "."): String {
-    return this.octetArray.joinToString(separator) { it.toOctetBinaryRepresentation() }
+    return (0 until 32)
+        .reversed()
+        .map { if (this.bitSet[it]) "1" else "0" }
+        .chunked(OCTET_LENGTH)
+        .joinToString(separator) { it.joinToString("") }
+}
+
+internal fun addressBitSetFromOctets(
+    firstOctet: UByte,
+    secondOctet: UByte,
+    thirdOctet: UByte,
+    fourthOctet: UByte
+): BitSet {
+    return BitSet(ADDRESS_BIT_LENGTH / 2).apply {
+        arrayOf(firstOctet, secondOctet, thirdOctet, fourthOctet).joinToString("") { it.toOctetBinaryRepresentation() }
+            .mapIndexed { index, c ->
+                set(ADDRESS_BIT_LENGTH - index - 1, c == '1')
+            }
+    }
 }
 
 internal fun String.toAddressFromBinaryRepresentation(separator: String = "."): Address {

@@ -1,12 +1,28 @@
 package io.github.nickacpt.nipitc.utils.address
 
-data class  Address(
-    val firstOctet: UByte,
-    val secondOctet: UByte,
-    val thirdOctet: UByte,
-    val fourthOctet: UByte
+import io.github.nickacpt.nipitc.utils.ADDRESS_BIT_LENGTH
+import io.github.nickacpt.nipitc.utils.addressBitSetFromOctets
+import java.util.BitSet
+
+data class Address(
+    val bitSet: BitSet
 ) {
-    val octetArray = arrayOf(firstOctet, secondOctet, thirdOctet, fourthOctet)
+
+    constructor(
+        firstOctet: UByte,
+        secondOctet: UByte,
+        thirdOctet: UByte,
+        fourthOctet: UByte
+    ) : this(addressBitSetFromOctets(firstOctet, secondOctet, thirdOctet, fourthOctet))
+
+    val firstOctet: UByte = getOctet(0, 8)
+    val secondOctet: UByte = getOctet(8, 16)
+    val thirdOctet: UByte = getOctet(16, 24)
+    val fourthOctet: UByte = getOctet(24, 32)
+
+    private fun getOctet(start: Int, end: Int): UByte {
+        return bitSet[ADDRESS_BIT_LENGTH - end, ADDRESS_BIT_LENGTH - start].toByteArray().firstOrNull()?.toUByte() ?: 0u
+    }
 
     override fun toString(): String {
         return "$firstOctet.$secondOctet.$thirdOctet.$fourthOctet"
