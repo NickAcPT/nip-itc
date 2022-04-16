@@ -11,13 +11,18 @@ data class AddressMask(
 
     val maskAddress = maskAddressFromMostSignificantBitCount(mostSignificantBits)
 
-    fun apply(address: Address): Address {
+    infix fun and(address: Address): Address {
         return address and maskAddress
     }
 
     override fun toString(): String = "/$mostSignificantBits"
 
     companion object {
+
+        fun fromAddress(address: Address): AddressMask {
+            return AddressMask(address.bitSet.cardinality())
+        }
+
         fun fromString(str: String, hasSlashPrefix: Boolean = true): AddressMask {
             if (hasSlashPrefix && str.first() != '/') throw IllegalArgumentException("Invalid address mask string: $str")
 

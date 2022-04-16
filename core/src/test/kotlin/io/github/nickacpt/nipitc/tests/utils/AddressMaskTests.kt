@@ -19,9 +19,11 @@ class AddressMaskTests {
     @ParameterizedTest(name = "Address \"{1}\" with mask \"{0}\" applied should be \"{2}\"")
     @MethodSource("addressAndMaskApplyProvider")
     fun `Address Mask should be correct when applied`(mask: AddressMask, address: Address, expected: Address) {
-        val actual = mask.apply(address)
+        val actual = mask.and(address)
         assertEquals(expected, actual)
     }
+
+
 
     companion object {
         @JvmStatic

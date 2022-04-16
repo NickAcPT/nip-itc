@@ -14,7 +14,7 @@ internal fun String.fromOctetBinaryRepresentation(): UByte {
     return toUByte(2)
 }
 
-internal fun Address.toBinaryRepresentation(separator: String = "."): String {
+fun Address.toBinaryRepresentation(separator: String = "."): String {
     return (0 until 32)
         .reversed()
         .map { if (this.bitSet[it]) "1" else "0" }
