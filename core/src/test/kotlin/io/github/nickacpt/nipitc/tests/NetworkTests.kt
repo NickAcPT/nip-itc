@@ -2,6 +2,7 @@ package io.github.nickacpt.nipitc.tests
 
 import io.github.nickacpt.nipitc.spec.network.Network
 import io.github.nickacpt.nipitc.utils.address.Address
+import io.github.nickacpt.nipitc.utils.address.AddressMask
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
@@ -29,7 +30,30 @@ class NetworkTests {
         assertEquals(expectedBroadcast, network.broadcastAddress)
     }
 
+    @ParameterizedTest(name = "Network with mask \"{0}\" should have \"{1}\" hosts")
+    @MethodSource("networkHostsCountProvider")
+    fun `Network hosts count should be correct`(addressMask: AddressMask, expectedHostsCount: Int) {
+        val networkAddr = Address.fromString("127.0.0.0")
+        val network = Network(networkAddr, addressMask)
+
+        assertEquals(expectedHostsCount, network.hostsPerSubnetCount)
+    }
+
     companion object {
+        @JvmStatic
+        fun networkHostsCountProvider() =
+            arrayOf(
+                25 to 126,
+                26 to 62,
+                27 to 30,
+                28 to 14,
+                29 to 6,
+                30 to 2
+            ).map { (bits, hostsCount) ->
+                Arguments.of(AddressMask(bits), hostsCount)
+            }
+
+
         @JvmStatic
         fun networkAddressBroadcastProvider() =
             arrayOf(

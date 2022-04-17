@@ -2,7 +2,7 @@ package io.github.nickacpt.nipitc.spec.network
 
 import io.github.nickacpt.nipitc.utils.address.Address
 import io.github.nickacpt.nipitc.utils.address.AddressMask
-import io.github.nickacpt.nipitc.utils.invert
+import kotlin.math.pow
 
 data class Network constructor(
     val address: Address, val mask: AddressMask
@@ -16,8 +16,10 @@ data class Network constructor(
         }
     }
 
-    val broadcastAddress = (address or mask.maskAddress.invert())
+    val hostAddressMask = mask.invertedAddress
+    val broadcastAddress = (address or hostAddressMask)
 
+    val hostsPerSubnetCount = ((2.toDouble().pow(hostAddressMask.bitSet.cardinality())) - 2).toInt()
     fun contains(address: Address): Boolean {
         return mask and address == this.address
     }

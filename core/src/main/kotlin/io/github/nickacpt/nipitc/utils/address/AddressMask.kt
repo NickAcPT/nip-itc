@@ -1,5 +1,6 @@
 package io.github.nickacpt.nipitc.utils.address
 
+import io.github.nickacpt.nipitc.utils.invert
 import io.github.nickacpt.nipitc.utils.maskAddressFromMostSignificantBitCount
 
 data class AddressMask(
@@ -10,6 +11,7 @@ data class AddressMask(
     }
 
     val maskAddress = maskAddressFromMostSignificantBitCount(mostSignificantBits)
+    val invertedAddress = maskAddress.invert()
 
     infix fun and(address: Address): Address {
         return address and maskAddress
