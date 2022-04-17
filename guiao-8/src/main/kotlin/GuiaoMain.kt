@@ -8,6 +8,10 @@ fun main() {
                 ip = "192.168.1.2"
                 gateway = "192.168.1.1"
             }
+            println(pc1)
+            println(pc1.ip)
+            println(pc1.gateway)
+            println(pc1.ip?.network)
         }
     }
 }

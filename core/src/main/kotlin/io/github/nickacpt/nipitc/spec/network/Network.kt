@@ -4,9 +4,9 @@ import io.github.nickacpt.nipitc.utils.address.Address
 import io.github.nickacpt.nipitc.utils.address.AddressMask
 import kotlin.math.pow
 
-data class Network constructor(
-    val address: Address, val mask: AddressMask
-) {
+class Network constructor(
+    address: Address, mask: AddressMask
+) : IpWithMask(address, mask) {
 
     init {
         // Check if the network address is valid
@@ -23,8 +23,6 @@ data class Network constructor(
     fun contains(address: Address): Boolean {
         return mask and address == this.address
     }
-
-    override fun toString() = "$address${mask}"
 
     companion object {
 

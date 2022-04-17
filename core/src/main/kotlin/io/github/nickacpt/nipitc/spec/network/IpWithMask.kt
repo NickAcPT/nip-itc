@@ -3,10 +3,12 @@ package io.github.nickacpt.nipitc.spec.network
 import io.github.nickacpt.nipitc.utils.address.Address
 import io.github.nickacpt.nipitc.utils.address.AddressMask
 
-data class IpWithMask(
+open class IpWithMask(
     val address: Address, val mask: AddressMask
 ) {
-    val network = Network(mask and address, mask)
+    val network by lazy { Network(mask and address, mask) }
+
+    override fun toString() = "$address${mask}"
 
     companion object {
         fun fromString(address: String, defaultAddressMask: AddressMask? = null): IpWithMask {
